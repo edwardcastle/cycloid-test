@@ -1,5 +1,13 @@
 <script setup>
+// Vue
+import { ref } from 'vue'
+// Store
+import { useFruits } from '@/stores/fruits.js'
+// Components
 import DeleteIcon from '@/components/icons/DeleteIcon.vue'
+import Modal from '@/components/ModalDelete.vue'
+// Composables
+import { useToast } from '@/composables/toast.js'
 
 defineProps({
   fruits: {
@@ -13,10 +21,28 @@ defineProps({
     default: true,
   },
 })
+
+const showModal = ref(false)
+
+const store = useFruits()
+const { showToast } = useToast()
+
+const deleteFruit = id => {
+  store.deleteFruit(id)
+  showModal.value = false
+  showToast('Fruit deleted')
+}
 </script>
 
 <template>
   <section v-if="fruits.id" class="fruit">
+    <Modal
+      :show="showModal"
+      :name="fruits.name"
+      @remove="deleteFruit(fruits.id)"
+      @close="showModal = false"
+    />
+
     <RouterLink :to="{ name: 'fruit-detail', params: { id: fruits.id } }">
       <!-- image -->
       <img class="fruit__image" :src="fruits?.image" :alt="fruits.name" />
@@ -41,7 +67,12 @@ defineProps({
       <small
         >Expires: {{ new Date(fruits.expires).toLocaleDateString('es') }}
       </small>
-      <DeleteIcon class="delete-icon" v-if="showIcon" />
+
+      <DeleteIcon
+        v-if="showIcon"
+        class="delete-icon"
+        @click="showModal = true"
+      />
     </div>
   </section>
 </template>

@@ -6,7 +6,7 @@ export const useFruits = defineStore('fruits', () => {
   const fruits = ref([])
   const currentFruit = ref(null)
   const fruitsLength = ref(0)
-  const loading = ref(false);
+  const loading = ref(false)
 
   /**
    * Given a complex json return an array where contain {isFruit}
@@ -35,20 +35,20 @@ export const useFruits = defineStore('fruits', () => {
    */
   const getFruits = async () => {
     try {
-      loading.value = true;
+      loading.value = true
       const response = await fetch(`${BASE_URL}/fruit`)
       if (!response.ok) {
-        loading.value = false;
+        loading.value = false
         throw new Error(`${response?.statusText}`)
       } else {
         const result = await response.json()
         fruitsLength.value = result.data.fruitCount
         extractFruits(result.data)
-        loading.value = false;
+        loading.value = false
       }
     } catch (error) {
       console.log(error)
-      loading.value = false;
+      loading.value = false
     }
   }
 
@@ -59,18 +59,40 @@ export const useFruits = defineStore('fruits', () => {
    * */
   const getFruitById = async id => {
     try {
-      loading.value = true;
+      loading.value = true
       const response = await fetch(`${BASE_URL}/fruit/${id}`)
       if (!response.ok) {
-        loading.value = false;
+        loading.value = false
         throw new Error(`${response?.statusText}`)
       } else {
         currentFruit.value = await response.json()
-        loading.value = false;
+        loading.value = false
       }
     } catch (error) {
       console.log(error)
-      loading.value = false;
+      loading.value = false
+    }
+  }
+
+  /**
+   * Delete a fruit given the id
+   * @param id
+   **/
+  const deleteFruit = async id => {
+    try {
+      loading.value = true
+      const response = await fetch(`${BASE_URL}/fruit/${id}`, {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        loading.value = false
+        throw new Error(`${response?.statusText}`)
+      }
+      fruits.value = fruits.value.filter(fruit => fruit.id !== id)
+      loading.value = false
+    } catch (error) {
+      console.log(error)
+      loading.value = false
     }
   }
 
@@ -81,5 +103,6 @@ export const useFruits = defineStore('fruits', () => {
     currentFruit,
     getFruits,
     getFruitById,
+    deleteFruit,
   }
 })

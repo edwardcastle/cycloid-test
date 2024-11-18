@@ -1,8 +1,11 @@
-<script setup></script>
+<script setup>
+import ToastMessage from '@/components/ToastMessage.vue'
+</script>
 
 <template>
   <main class="container">
     <RouterView />
+    <ToastMessage />
   </main>
 </template>
 
