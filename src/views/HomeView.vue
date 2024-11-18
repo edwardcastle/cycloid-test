@@ -1,7 +1,11 @@
 <script setup>
+// Vue
 import { onMounted } from 'vue'
+// Store
 import { useFruits } from '@/stores/fruits.js'
+// Components
 import FruitsCard from '@/components/FruitsCard.vue'
+import LoadingIcon from '@/components/icons/LoadingIcon.vue'
 
 const store = useFruits()
 onMounted(async () => await store.getFruits())
@@ -9,14 +13,16 @@ onMounted(async () => await store.getFruits())
 
 <template>
   <main>
-    <h1> Lists of fruits </h1>
-    <div class="item">
+    <h1>Lists of fruits</h1>
+    <div v-if="!store.loading" class="item">
       <FruitsCard
         v-for="fruit in store.fruits"
         :key="fruit?.id"
         :fruits="fruit"
+        :show-icon="true"
       />
     </div>
+    <LoadingIcon v-else />
   </main>
 </template>
 

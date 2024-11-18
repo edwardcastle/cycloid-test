@@ -1,9 +1,16 @@
 <script setup>
+import DeleteIcon from '@/components/icons/DeleteIcon.vue'
+
 defineProps({
   fruits: {
     type: Object,
     required: true,
     default: () => {},
+  },
+  showIcon: {
+    type: Boolean,
+    required: true,
+    default: true,
   },
 })
 </script>
@@ -27,12 +34,15 @@ defineProps({
       <div class="fruit__description">
         <p>{{ fruits.description }}</p>
       </div>
-
-      <!-- expires -->
-      <small
-        >Expires: {{ new Date(fruits.expires).toLocaleDateString('es') }}</small
-      >
     </RouterLink>
+
+    <!-- expires -->
+    <div class="expires">
+      <small
+        >Expires: {{ new Date(fruits.expires).toLocaleDateString('es') }}
+      </small>
+      <DeleteIcon class="delete-icon" v-if="showIcon" />
+    </div>
   </section>
 </template>
 
@@ -73,9 +83,16 @@ defineProps({
     margin-bottom: 10px;
   }
 
-  small {
+  .expires {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .delete-icon {
+    z-index: 1;
+    width: 45px;
+    height: 45px;
   }
 }
 </style>

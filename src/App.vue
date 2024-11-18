@@ -8,7 +8,6 @@
 
 <style scoped>
 .container {
-  min-height: 100vh;
   padding: 10px 10px;
   @media screen and (min-width: 520px) {
     padding: 25px 25px;
