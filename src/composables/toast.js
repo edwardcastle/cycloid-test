@@ -5,7 +5,7 @@ export function useToast() {
     toast.classList.add('show')
     setTimeout(() => {
       toast.classList.remove('show')
-    }, 2000)
+    }, 3000)
   }
   return { showToast }
 }

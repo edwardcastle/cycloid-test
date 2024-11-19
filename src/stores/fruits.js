@@ -89,6 +89,34 @@ export const useFruits = defineStore('fruits', () => {
   }
 
   /**
+   * Create a new fruit
+   * @param fruit {Object}
+   */
+  const createFruit = async fruit => {
+    try {
+      loading.value = true
+      const response = await fetch(`${BASE_URL}/fruit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fruit),
+      })
+
+      if (!response.ok) {
+        throw new Error(`${response.statusText}`)
+      }
+
+      const newFruit = await response.json()
+      fruits.value.push(newFruit)
+      loading.value = false
+    } catch (error) {
+      console.error('Error creating fruit:', error)
+      loading.value = false
+    }
+  }
+
+  /**
    * Delete a fruit given the id
    * @param id
    **/
@@ -117,6 +145,7 @@ export const useFruits = defineStore('fruits', () => {
     currentFruit,
     getFruits,
     getFruitById,
+    createFruit,
     deleteFruit,
   }
 })
