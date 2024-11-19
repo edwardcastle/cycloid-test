@@ -8,6 +8,7 @@
 
 <style scoped lang="scss">
 #toast {
+  z-index: 99;
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -22,6 +23,6 @@
 }
 
 #toast.show {
-  opacity: 1;
+  opacity: 0.8;
 }
 </style>

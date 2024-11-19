@@ -1,22 +1,33 @@
 <script setup>
 // Vue
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 // Store
 import { useFruits } from '@/stores/fruits.js'
 // Components
 import FruitsCard from '@/components/FruitsCard.vue'
 import LoadingIcon from '@/components/icons/LoadingIcon.vue'
+import ModalCreate from '@/components/ModalCreate.vue'
 
 const store = useFruits()
+const showCreateModal = ref(false)
+
 onMounted(async () => await store.getFruits())
 </script>
 
 <template>
   <main>
+    <!-- Create fruit modal -->
+    <ModalCreate @close="showCreateModal = false" :show="showCreateModal" />
+
+    <!-- Header -->
     <header>
       <h1>Lists of fruits</h1>
-      <button class="primary medium">Add fruit</button>
+      <button class="primary medium" @click="showCreateModal = true">
+        Add fruit
+      </button>
     </header>
+
+    <!-- Lists of fruits -->
     <div v-if="!store.loading" class="item">
       <FruitsCard
         v-for="fruit in store.fruits"
@@ -25,6 +36,8 @@ onMounted(async () => await store.getFruits())
         :show-icon="true"
       />
     </div>
+
+    <!-- Loading icon -->
     <LoadingIcon v-else />
   </main>
 </template>

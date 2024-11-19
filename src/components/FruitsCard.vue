@@ -8,6 +8,8 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue'
 import Modal from '@/components/ModalDelete.vue'
 // Composables
 import { useToast } from '@/composables/toast.js'
+import ModalCreate from '@/components/ModalCreate.vue'
+import ModalDelete from '@/components/ModalDelete.vue'
 
 defineProps({
   fruits: {
@@ -22,25 +24,26 @@ defineProps({
   },
 })
 
-const showModal = ref(false)
+const showDeleteModal = ref(false)
 
 const store = useFruits()
 const { showToast } = useToast()
 
 const deleteFruit = id => {
   store.deleteFruit(id)
-  showModal.value = false
+  showDeleteModal.value = false
   showToast('Fruit deleted')
 }
 </script>
 
 <template>
   <section v-if="fruits.id" class="fruit">
-    <Modal
-      :show="showModal"
+
+    <ModalDelete
+      :show="showDeleteModal"
       :name="fruits.name"
       @remove="deleteFruit(fruits.id)"
-      @close="showModal = false"
+      @close="showDeleteModal = false"
     />
 
     <RouterLink :to="{ name: 'fruit-detail', params: { id: fruits.id } }">
@@ -71,7 +74,7 @@ const deleteFruit = id => {
       <DeleteIcon
         v-if="showIcon"
         class="delete-icon"
-        @click="showModal = true"
+        @click="showDeleteModal = true"
       />
     </div>
   </section>
