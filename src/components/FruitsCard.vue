@@ -5,11 +5,9 @@ import { ref } from 'vue'
 import { useFruits } from '@/stores/fruits.js'
 // Components
 import DeleteIcon from '@/components/icons/DeleteIcon.vue'
-import Modal from '@/components/ModalDelete.vue'
+import ModalDelete from '@/components/ModalDelete.vue'
 // Composables
 import { useToast } from '@/composables/toast.js'
-import ModalCreate from '@/components/ModalCreate.vue'
-import ModalDelete from '@/components/ModalDelete.vue'
 
 defineProps({
   fruits: {
