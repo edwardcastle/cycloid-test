@@ -13,12 +13,25 @@ export const useFruits = defineStore('fruits', () => {
    * @param data{Object}
    * @return void
    * */
-  const extractFruits = data => {
+  const extractFruits = async data => {
     fruits.value = []
     const explore = node => {
       if (typeof node === 'object' && node !== null) {
         if (node.isFruit) {
-          fruits.value.push(node)
+          for (const key in node) {
+            explore(node[key])
+          }
+          fruits.value.push({
+            id: node.id,
+            isFruit: node.isFruit,
+            name: node.name,
+            image: node.image,
+            price: node.price,
+            color: node.color,
+            description: node.description,
+            taste: node.taste,
+            expires: node.expires,
+          })
         } else {
           for (const key in node) {
             explore(node[key])
@@ -43,7 +56,8 @@ export const useFruits = defineStore('fruits', () => {
       } else {
         const result = await response.json()
         fruitsLength.value = result.data.fruitCount
-        extractFruits(result.data)
+        await extractFruits(result.data)
+        fruits.value = fruits.value.sort((a, b) => a.id - b.id)
         loading.value = false
       }
     } catch (error) {

@@ -16,15 +16,18 @@ onMounted(async () => await store.getFruitById(route.params.id))
 </script>
 
 <template>
-  <div class="content">
-    <FruitsCard
-      class="fruit-detail"
-      v-if="fruit && !store.loading"
-      :fruits="fruit"
-      :show-icon="false"
-    />
-    <LoadingIcon v-if="store.loading" />
-  </div>
+  <main>
+    <h1>Fruit detail</h1>
+    <div class="content">
+      <FruitsCard
+        class="fruit-detail"
+        v-if="fruit && !store.loading"
+        :fruits="fruit"
+        :show-icon="false"
+      />
+      <LoadingIcon v-if="store.loading" />
+    </div>
+  </main>
 </template>
 
 <style scoped lang="scss">
@@ -34,6 +37,6 @@ onMounted(async () => await store.getFruitById(route.params.id))
 }
 
 .fruit-detail {
-  max-width: 500px;
+  max-width: 450px;
 }
 </style>

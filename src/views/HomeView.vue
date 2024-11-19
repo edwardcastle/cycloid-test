@@ -13,7 +13,10 @@ onMounted(async () => await store.getFruits())
 
 <template>
   <main>
-    <h1>Lists of fruits</h1>
+    <header>
+      <h1>Lists of fruits</h1>
+      <button class="primary medium">Add fruit</button>
+    </header>
     <div v-if="!store.loading" class="item">
       <FruitsCard
         v-for="fruit in store.fruits"
@@ -27,11 +30,19 @@ onMounted(async () => await store.getFruits())
 </template>
 
 <style lang="scss" scoped>
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
 .item {
   display: grid;
   grid-template-columns: 1fr;
   cursor: pointer;
   gap: 50px;
+  margin-top: 50px;
 
   @media screen and (min-width: 520px) {
     grid-template-columns: repeat(2, 1fr);
