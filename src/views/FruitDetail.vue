@@ -12,11 +12,12 @@ const route = useRoute()
 const store = useFruits()
 
 const fruit = computed(() => store.currentFruit)
-onMounted(async () => await store.getFruitById(route.params.id))
+onMounted(() => store.getFruitById(route.params.id))
 </script>
 
 <template>
   <main>
+    <RouterLink :to="{ name: 'home' }">Go Back</RouterLink>
     <h1>Fruit detail</h1>
     <div class="content">
       <FruitsCard

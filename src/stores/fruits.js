@@ -9,18 +9,16 @@ export const useFruits = defineStore('fruits', () => {
   const loading = ref(false)
 
   /**
-   * Given a complex json return an array where contain {isFruit}
-   * @param data{Object}
-   * @return void
-   * */
-  const extractFruits = async data => {
-    fruits.value = []
-    const explore = node => {
+   * Given a complex JSON, return an array containing objects with {isFruit: true}.
+   * @param {Object} data - The JSON data to extract fruits from.
+   * @return {void}
+   */
+  const extractFruits = async (data) => {
+    fruits.value = [] // Reset fruits array
+    const explore = (node) => {
       if (typeof node === 'object' && node !== null) {
         if (node.isFruit) {
-          for (const key in node) {
-            explore(node[key])
-          }
+          // If the node is a fruit, add it to the fruits array
           fruits.value.push({
             id: node.id,
             isFruit: node.isFruit,
@@ -32,67 +30,64 @@ export const useFruits = defineStore('fruits', () => {
             taste: node.taste,
             expires: node.expires,
           })
-        } else {
-          for (const key in node) {
-            explore(node[key])
-          }
+        }
+        // Recursively explore all properties of the node
+        for (const key in node) {
+          explore(node[key])
         }
       }
     }
-    explore(data)
+    explore(data) // Start the exploration
   }
 
   /**
-   * Get all the objects from api
-   * @return void
+   * Fetch all fruits from the API and update the store.
+   * @return {void}
    */
   const getFruits = async () => {
     try {
       loading.value = true
       const response = await fetch(`${BASE_URL}/fruit`)
       if (!response.ok) {
-        loading.value = false
-        throw new Error(`${response?.statusText}`)
-      } else {
-        const result = await response.json()
-        fruitsLength.value = result.data.fruitCount
-        await extractFruits(result.data)
-        fruits.value = fruits.value.sort((a, b) => a.id - b.id)
-        loading.value = false
+        throw new Error(`Failed to fetch fruits: ${response.statusText}`)
       }
+      const result = await response.json()
+      fruitsLength.value = result.data.fruitCount
+      await extractFruits(result.data)
+      fruits.value = fruits.value.sort((a, b) => a.id - b.id) // Sort fruits by ID
     } catch (error) {
-      console.log(error)
-      loading.value = false
+      console.error('Error fetching fruits:', error)
+    } finally {
+      loading.value = false // Ensure loading is reset
     }
   }
 
   /**
-   * Return a fruit given its ID
-   * @param id{string}
-   * @retun void
-   * */
-  const getFruitById = async id => {
+   * Fetch a single fruit by its ID and set it as the current fruit.
+   * @param {string} id - The ID of the fruit to fetch.
+   * @return {void}
+   */
+  const getFruitById = async (id) => {
     try {
       loading.value = true
       const response = await fetch(`${BASE_URL}/fruit/${id}`)
       if (!response.ok) {
-        loading.value = false
-        throw new Error(`${response?.statusText}`)
-      } else {
-        currentFruit.value = await response.json()
-        loading.value = false
+        throw new Error(`Failed to fetch fruit: ${response.statusText}`)
       }
+      currentFruit.value = await response.json()
     } catch (error) {
-      console.log(error)
+      console.error('Error fetching fruit by ID:', error)
+    } finally {
       loading.value = false
     }
   }
 
   /**
-   * Create a new fruit
-   * @param fruit {Object}
+   * Create a new fruit and add it to the store.
+   * @param {Object} fruit - The fruit object to create.
+   * @return {void}
    */
-  const createFruit = async fruit => {
+  const createFruit = async (fruit) => {
     try {
       loading.value = true
       const response = await fetch(`${BASE_URL}/fruit`, {
@@ -102,38 +97,36 @@ export const useFruits = defineStore('fruits', () => {
         },
         body: JSON.stringify(fruit),
       })
-
       if (!response.ok) {
-        throw new Error(`${response.statusText}`)
+        throw new Error(`Failed to create fruit: ${response.statusText}`)
       }
-
       const newFruit = await response.json()
-      fruits.value.push(newFruit)
-      loading.value = false
+      fruits.value.push(newFruit) // Add the new fruit to the store
     } catch (error) {
       console.error('Error creating fruit:', error)
+    } finally {
       loading.value = false
     }
   }
 
   /**
-   * Delete a fruit given the id
-   * @param id
-   **/
-  const deleteFruit = async id => {
+   * Delete a fruit by its ID and remove it from the store.
+   * @param {string} id - The ID of the fruit to delete.
+   * @return {void}
+   */
+  const deleteFruit = async (id) => {
     try {
       loading.value = true
       const response = await fetch(`${BASE_URL}/fruit/${id}`, {
         method: 'DELETE',
       })
       if (!response.ok) {
-        loading.value = false
-        throw new Error(`${response?.statusText}`)
+        throw new Error(`Failed to delete fruit: ${response.statusText}`)
       }
-      fruits.value = fruits.value.filter(fruit => fruit.id !== id)
-      loading.value = false
+      fruits.value = fruits.value.filter((fruit) => fruit.id !== id) // Remove the fruit from the store
     } catch (error) {
-      console.log(error)
+      console.error('Error deleting fruit:', error)
+    } finally {
       loading.value = false
     }
   }
