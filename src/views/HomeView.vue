@@ -6,7 +6,7 @@ import { useFruits } from '@/stores/fruits.js'
 // Components
 import FruitsCard from '@/components/FruitsCard.vue'
 import LoadingIcon from '@/components/icons/LoadingIcon.vue'
-import ModalCreate from '@/components/ModalCreate.vue'
+import CreateProduct from '@/components/CreateProduct.vue'
 
 const store = useFruits()
 const showCreateModal = ref(false)
@@ -17,8 +17,7 @@ onMounted(async () => await store.getFruits())
 <template>
   <main>
     <!-- Create fruit modal -->
-    <ModalCreate @close="showCreateModal = false" :show="showCreateModal" />
-
+    <CreateProduct @close="showCreateModal = false" :show="showCreateModal" />
     <!-- Header -->
     <header>
       <h1>Lists of fruits</h1>

@@ -24,7 +24,7 @@ onMounted(() => store.getFruitById(route.params.id))
         class="fruit-detail"
         v-if="fruit && !store.loading"
         :fruits="fruit"
-        :show-icon="false"
+        :show-icon="true"
       />
       <LoadingIcon v-if="store.loading" />
     </div>

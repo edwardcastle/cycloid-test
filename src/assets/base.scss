@@ -3,28 +3,26 @@ a {
   color: inherit;
 }
 
-input[type="file"], input[type="color"] {
-  cursor: pointer;
-}
-
-input[type="color"] {
-  height: 40px;
-  width: 40px;
-}
-
-input[type="text"], input[type="number"], input[type="date"] {
+input, textarea {
   padding: 0 10px;
   width: 100%;
-}
-
-
-input, textarea {
   height: 3rem;
   background-color: #f4f4f4;
   border: none;
   border-radius: 10px;
   font-size: 18px;
   outline: none;
+}
+
+input[type="color"] {
+  height: 40px;
+  width: 40px;
+  border-radius: 0;
+  padding: 0;
+}
+
+input[type="file"], input[type="color"] {
+  cursor: pointer;
 }
 
 textarea {
@@ -61,7 +59,7 @@ button:hover {
   left: 0;
   top: 0;
   width: 100%;
-  overflow: auto;
+  overflow-y: scroll;
   height: 100%;
   background-color: rgba(168, 168, 168, 0.2);
 }

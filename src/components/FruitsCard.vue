@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { useFruits } from '@/stores/fruits.js'
 // Components
 import DeleteIcon from '@/components/icons/DeleteIcon.vue'
-import ModalDelete from '@/components/ModalDelete.vue'
+import DeleteConfirmationProduct from '@/components/DeleteConfirmationProduct.vue'
 // Composables
 import { useToast } from '@/composables/toast.js'
 
@@ -37,7 +37,7 @@ const deleteFruit = id => {
 <template>
   <section v-if="fruits.id" class="fruit">
 
-    <ModalDelete
+    <DeleteConfirmationProduct
       :show="showDeleteModal"
       :name="fruits.name"
       @remove="deleteFruit(fruits.id)"
@@ -108,9 +108,7 @@ const deleteFruit = id => {
   }
 
   &__description {
-    height: 75px;
     width: 100%;
-    overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 10px;
   }
